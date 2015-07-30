@@ -44,7 +44,6 @@ public class MainActivityFragment extends Fragment {
     private final String LOG_MAINACTIVITY = MainActivityFragment.class.getSimpleName();
 
     private MovieImageAdapter movieImageAdapter;
-
     private List<MovieData> movieDataList;
 
     private List<Integer> imageList = Arrays.asList(R.drawable.movie_trailer, R.drawable.movie_trailer
