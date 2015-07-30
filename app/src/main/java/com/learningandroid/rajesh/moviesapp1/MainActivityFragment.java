@@ -39,14 +39,13 @@ public class MainActivityFragment extends Fragment {
     private final static String PATH_MOVIE_3 = "movie";
     private final static String PARAM_VALUE_MOVIE_SORT_BY_POPULARITY = "popularity.desc";
     private final static String PARAM_KEY_MOVIE_SORT_BY_POPULARITY = "sort_by";
-    private final static String IMAGE_DOMAIN = "image.tmdb.org";
-    private final static String IMAGE_PATH_1 = "t";
-    private final static String IMAGE_PATH_2 = "p";
-    private final static String DEFAULT_IMAGE_SIZE = "W185";
+
 
     private final String LOG_MAINACTIVITY = MainActivityFragment.class.getSimpleName();
 
     private MovieImageAdapter movieImageAdapter;
+
+    private List<MovieData> movieDataList;
 
     private List<Integer> imageList = Arrays.asList(R.drawable.movie_trailer, R.drawable.movie_trailer
                                         ,R.drawable.movie_trailer, R.drawable.movie_trailer
@@ -76,7 +75,8 @@ public class MainActivityFragment extends Fragment {
         Log.i(LOG_MAINACTIVITY, "inside onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.i(LOG_MAINACTIVITY, " from onCreateView - got the root view");
-        movieImageAdapter = new MovieImageAdapter(getActivity(), imageList);
+        //movieImageAdapter = new MovieImageAdapter(getActivity(), imageList);
+        movieImageAdapter = new MovieImageAdapter(getActivity());
         Log.i(LOG_MAINACTIVITY, " from onCreateView - movieImageAdapter");
         GridView gridView = (GridView)rootView.findViewById(R.id.image_gridView);
         Log.i(LOG_MAINACTIVITY, " from onCreateView - before setting the adaper");
@@ -97,10 +97,6 @@ public class MainActivityFragment extends Fragment {
                 .build();
     }
 
-    private Uri buildImageUri(final String movieId){
-        //TODO - Implement this method to get the image url for the passed id
-        return null;
-    }
 
     private class MovieDetailsAsync extends AsyncTask<String, Void, List<MovieData>>{
 
@@ -115,8 +111,13 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<MovieData> result) {
-            for(MovieData movieData : result){
-                Log.i(LOG_MOVIE_ASYNC, "Movie DATA = " + movieData.toString());
+            movieDataList = result;
+            if (movieDataList != null) {
+                movieImageAdapter.clear();
+                for (MovieData movieData : result) {
+                    movieImageAdapter.add(movieData);
+                    Log.i(LOG_MOVIE_ASYNC, "Movie DATA = " + movieData.toString());
+                }
             }
         }
 
