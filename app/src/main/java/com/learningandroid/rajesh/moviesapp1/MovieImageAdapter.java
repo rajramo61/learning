@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -31,7 +33,11 @@ public class MovieImageAdapter extends ArrayAdapter<Integer> {
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.grid_item_movie_imageview);
-        imageView.setImageResource(item);
+        //imageView.setImageResource(item);
+        Picasso.with(getContext()).setLoggingEnabled(true);
+        Picasso.with(getContext())
+                .load(item)
+                .into(imageView);
         return convertView;
     }
 }
