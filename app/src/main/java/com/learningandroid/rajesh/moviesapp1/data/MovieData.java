@@ -1,15 +1,21 @@
 package com.learningandroid.rajesh.moviesapp1.data;
 
+import java.io.Serializable;
+
 /**
  * Created by RajPriyaMAC on 7/28/15.
  */
-public class MovieData {
+public class MovieData implements Serializable {
+    private static final long serialVersionUID = 1623409823;
     private long movieId;
     private String imagePath;
+    private String posterPath;
     private String title; //original title
     private String overview; //A plot synopsis
     private double popularity;
-    private double voteAverage;
+    private double voteAverage;//rating
+    private String releaseDate;
+    private String duration;
 
 
     public long getMovieId() {
@@ -60,6 +66,31 @@ public class MovieData {
         this.voteAverage = voteAverage;
     }
 
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
     @Override
     public String toString() {
         return "MovieData{" +
@@ -69,6 +100,9 @@ public class MovieData {
                 ", overview='" + overview + '\'' +
                 ", popularity=" + popularity +
                 ", voteAverage=" + voteAverage +
+                ", releaseDate=" + releaseDate +
+                ", posterPath=" + posterPath +
+                ", duration=" + duration +
                 '}';
     }
 

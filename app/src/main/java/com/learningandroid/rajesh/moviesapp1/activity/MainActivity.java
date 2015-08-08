@@ -1,9 +1,11 @@
-package com.learningandroid.rajesh.moviesapp1;
+package com.learningandroid.rajesh.moviesapp1.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.learningandroid.rajesh.moviesapp1.R;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,9 +32,20 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.movie_sorting_menu) {
+            Intent sortingIntent = new Intent(this, MoviePreferencesActivity.class);
+            startActivity(sortingIntent);
             return true;
         }
+        else if(id == R.id.grp_sort_by){
+            Toast.makeText(this, "Group id", Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.popular){
+            Toast.makeText(this, "popular id", Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.highest_rating){
+            Toast.makeText(this, "rating id", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "no action", Toast.LENGTH_SHORT).show();
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
