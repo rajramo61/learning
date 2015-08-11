@@ -28,44 +28,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MainActivityFragment extends Fragment {
-    //TODO - move all string constatnts to strings.xml
-    private final static String PARAM_VALUE_API_KEY = "";
-    private final static String PARAM_KEY_API_KEY = "api_key";
-    private final static String SCHEME = "https";
-    private final static String MOVIE_DOMAIN = "api.themoviedb.org";
-    private final static String PATH_MOVIE_2 = "discover";
-    private final static String PATH_MOVIE_1 = "3";
-    private final static String PATH_MOVIE_3 = "movie";
-    private final static String PARAM_VALUE_MOVIE_SORT_BY_POPULARITY = "popularity.desc";
-    private final static String PARAM_VALUE_MOVIE_SORT_BY_HIGHEST_RATING = "vote_average.desc";
-    private final static String PARAM_KEY_MOVIE_SORT_BY_POPULARITY = "sort_by";
 
+    private final static String PARAM_VALUE_API_KEY = "api_key";
 
     private final String LOG_MAIN_ACTIVITY = MainActivityFragment.class.getSimpleName();
 
     private MovieImageAdapter movieImageAdapter;
     private List<MovieData> movieDataList;
-
-   /* private List<Integer> imageList = Arrays.asList(R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer
-                                        ,R.drawable.movie_trailer, R.drawable.movie_trailer);*/
 
 
     public MainActivityFragment() {
@@ -78,7 +56,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void fetchMovieData(final String sortingType) {
-        Log.i(LOG_MAIN_ACTIVITY, "Inside fetchMovieData");
+        if(Log.isLoggable(LOG_MAIN_ACTIVITY, Log.DEBUG)) Log.d(LOG_MAIN_ACTIVITY, "Inside fetchMovieData");
         String sortingScheme;
         if (sortingType == null)
             sortingScheme = getSortingPreference();
@@ -98,7 +76,6 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(LOG_MAIN_ACTIVITY, "inside on create");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -106,7 +83,6 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Log.i(LOG_MAIN_ACTIVITY, "inside onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         movieImageAdapter = new MovieImageAdapter(getActivity());
         GridView gridView = (GridView)rootView.findViewById(R.id.image_gridView);
@@ -124,9 +100,8 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        Log.i(LOG_MAIN_ACTIVITY, "Inside onOptionsItemSelected");
-        if (Log.isLoggable(LOG_MAIN_ACTIVITY, Log.DEBUG))
-            Log.d(LOG_MAIN_ACTIVITY, "Inside onOptionsItemSelected");
+        if (Log.isLoggable(LOG_MAIN_ACTIVITY, Log.DEBUG)) Log.d(LOG_MAIN_ACTIVITY, "Inside onOptionsItemSelected");
+
         int selectedMenuId = menuItem.getItemId();
         if (selectedMenuId == R.id.movie_sorting_preference_menu) {
             Intent sortingIntent = new Intent(getActivity(), MoviePreferencesActivity.class);
@@ -137,12 +112,12 @@ public class MainActivityFragment extends Fragment {
             case R.id.popular:
                 if (menuItem.isChecked()) menuItem.setChecked(false);
                 else menuItem.setChecked(true);
-                fetchMovieData(PARAM_VALUE_MOVIE_SORT_BY_POPULARITY);
+                fetchMovieData(getString(R.string.PARAM_VALUE_MOVIE_SORT_BY_POPULARITY));
                 return true;
             case R.id.highest_rating:
                 if (menuItem.isChecked()) menuItem.setChecked(false);
                 else menuItem.setChecked(true);
-                fetchMovieData(PARAM_VALUE_MOVIE_SORT_BY_HIGHEST_RATING);
+                fetchMovieData(getString(R.string.PARAM_VALUE_MOVIE_SORT_BY_HIGHEST_RATING));
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
@@ -157,13 +132,13 @@ public class MainActivityFragment extends Fragment {
 
     private Uri buildMovieUri(final String sortingScheme) {
         return new Uri.Builder()
-                .scheme(SCHEME)
-                .authority(MOVIE_DOMAIN)
-                .appendPath(PATH_MOVIE_1)
-                .appendPath(PATH_MOVIE_2)
-                .appendPath(PATH_MOVIE_3)
-                .appendQueryParameter(PARAM_KEY_MOVIE_SORT_BY_POPULARITY, sortingScheme)
-                .appendQueryParameter(PARAM_KEY_API_KEY, PARAM_VALUE_API_KEY)
+                .scheme(getString(R.string.SCHEME))
+                .authority(getString(R.string.MOVIE_DOMAIN))
+                .appendPath(getString(R.string.PATH_MOVIE_1))
+                .appendPath(getString(R.string.PATH_MOVIE_2))
+                .appendPath(getString(R.string.PATH_MOVIE_3))
+                .appendQueryParameter(getString(R.string.PARAM_KEY_MOVIE_SORT_BY_POPULARITY), sortingScheme)
+                .appendQueryParameter(getString(R.string.PARAM_KEY_API_KEY), PARAM_VALUE_API_KEY)
                 .build();
     }
 
@@ -174,16 +149,14 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         protected List<MovieData> doInBackground(String... params) {
-            Log.i(LOG_MOVIE_ASYNC, "Inside doInBackground");
             final String sortingScheme = params[0];
             final String jsonData = readMovieJsonDataFromUrl(sortingScheme);
-            Log.i(LOG_MOVIE_ASYNC, "Inside doInBackground before return.");
+            if(Log.isLoggable(LOG_MOVIE_ASYNC, Log.DEBUG)) Log.d(LOG_MOVIE_ASYNC, "JSON DATA = " + jsonData);
             return getMovieDetails(jsonData);
         }
 
         @Override
         protected void onPostExecute(List<MovieData> result) {
-            //Log.i(LOG_MOVIE_ASYNC, "Inside onPostExecute");
             movieDataList = result;
             if (movieDataList != null) {
                 movieImageAdapter.clear();
@@ -202,14 +175,12 @@ public class MainActivityFragment extends Fragment {
          * @return - Returns json string from the Movie DB API
          */
         private String readMovieJsonDataFromUrl(final String sortingScheme) {
-            //Log.i(LOG_MOVIE_ASYNC, "Inside readMovieJsonDataFromUrl");
-            InputStream inputStream = null;
+            InputStreamReader inputStream = null;
             StringBuilder sb = new StringBuilder();
             try {
                 URL url = new URL(buildMovieUri(sortingScheme).toString());
-                if (Log.isLoggable(LOG_MOVIE_ASYNC, Log.DEBUG))
-                    Log.d(LOG_MOVIE_ASYNC, "Movie URL = " + url.toString());
-                inputStream = url.openStream();
+                if (Log.isLoggable(LOG_MOVIE_ASYNC, Log.DEBUG)) Log.d(LOG_MOVIE_ASYNC, "Movie URL = " + url.toString());
+                inputStream = new InputStreamReader(url.openStream(), Charset.defaultCharset());
                 int cp;
                 while ((cp = inputStream.read()) != -1) {
                     sb.append((char) cp);
@@ -228,10 +199,9 @@ public class MainActivityFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            String jsonData = sb.toString().trim();
-            Log.i(LOG_MOVIE_ASYNC, jsonData);
-            if (Log.isLoggable(LOG_MOVIE_ASYNC, Log.DEBUG))
-                Log.d(LOG_MOVIE_ASYNC, "JSON DATA = " + jsonData);
+            String jsonData = sb.toString();
+            if (Log.isLoggable(LOG_MOVIE_ASYNC, Log.DEBUG)) Log.d(LOG_MOVIE_ASYNC, "JSON DATA = " + jsonData);
+
             return jsonData;
         }
 
@@ -241,7 +211,6 @@ public class MainActivityFragment extends Fragment {
          * @return - Returns the list of Movie data after parsing the json string
          */
         private List<MovieData> getMovieDetails(final String jsonData){
-            //Log.i(LOG_MOVIE_ASYNC, "Inside getMovieDetails");
             final String RESULTS = "results";
             final List<MovieData> movieDataList = new ArrayList<MovieData>();
 
@@ -267,29 +236,19 @@ public class MainActivityFragment extends Fragment {
          * @return - Returns Movie data object from the passed json object
          */
         private MovieData createMovieData(JSONObject resultJsonObj) {
-            //Log.i(LOG_MOVIE_ASYNC, "Inside getMovieDetails");
-            final String MOVIE_ID = "id";
-            final String MOVIE_IMAGE_PATH = "poster_path";//backdrop_path
-            final String MOVIE_TITLE = "original_title";
-            final String MOVIE_OVERVIEW = "overview";
-            final String MOVIE_DURATION = "runtime";
-            final String MOVIE_POPULARITY = "popularity";
-            final String MOVIE_USER_RATING = "vote_average";
-            final String MOVIE_RELEASE_DATE = "release_date";
-            final String MOVIE_POSTER_IMAGE_PATH = "poster_path"; //For the detailed activity
 
             MovieData movieData = new MovieData();
 
             try {
-                movieData.setMovieId(resultJsonObj.getLong(MOVIE_ID));
-                movieData.setTitle(resultJsonObj.getString(MOVIE_TITLE));
-                movieData.setOverview(resultJsonObj.getString(MOVIE_OVERVIEW));
-                movieData.setImagePath(resultJsonObj.getString(MOVIE_IMAGE_PATH));
-                movieData.setPopularity(resultJsonObj.getDouble(MOVIE_POPULARITY));
-                movieData.setVoteAverage(resultJsonObj.getDouble(MOVIE_USER_RATING));
-                movieData.setReleaseDate(resultJsonObj.getString(MOVIE_RELEASE_DATE));
-                movieData.setPosterPath(resultJsonObj.getString(MOVIE_POSTER_IMAGE_PATH));
-                movieData.setReleaseDate(resultJsonObj.getString(MOVIE_RELEASE_DATE));
+                movieData.setMovieId(resultJsonObj.getLong(getString(R.string.MOVIE_ID)));
+                movieData.setTitle(resultJsonObj.getString(getString(R.string.MOVIE_TITLE)));
+                movieData.setOverview(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW)));
+                movieData.setOverview(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW)));
+                movieData.setImagePath(resultJsonObj.getString(getString(R.string.MOVIE_IMAGE_PATH)));
+                movieData.setPopularity(resultJsonObj.getDouble(getString(R.string.MOVIE_POPULARITY)));
+                movieData.setVoteAverage(resultJsonObj.getDouble(getString(R.string.MOVIE_USER_RATING)));
+                movieData.setReleaseDate(resultJsonObj.getString(getString(R.string.MOVIE_RELEASE_DATE)));
+                movieData.setPosterPath(resultJsonObj.getString(getString(R.string.MOVIE_POSTER_IMAGE_PATH)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

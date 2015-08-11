@@ -2,9 +2,7 @@ package com.learningandroid.rajesh.moviesapp1.data;
 
 import java.io.Serializable;
 
-/**
- * Created by RajPriyaMAC on 7/28/15.
- */
+
 public class MovieData implements Serializable {
     private static final long serialVersionUID = 1623409823;
     private long movieId;

@@ -14,9 +14,11 @@ import com.learningandroid.rajesh.moviesapp1.adapter.MovieImageAdapter;
 import com.learningandroid.rajesh.moviesapp1.data.MovieData;
 import com.squareup.picasso.Picasso;
 
+import java.io.UnsupportedEncodingException;
+
 
 /**
- * A placeholder fragment containing a simple view.
+ * This class Just reads the model data and populates the fragment with using that data.
  */
 public class MovieDetailActivityFragment extends Fragment {
 
@@ -37,7 +39,14 @@ public class MovieDetailActivityFragment extends Fragment {
         MovieData detailMovieData = getSerializableMovieData();
 
         TextView movieHeading = (TextView) detailFragment.findViewById(R.id.movie_name_heading);
-        movieHeading.setText(detailMovieData.getTitle());
+        TextView movieDescription = (TextView) detailFragment.findViewById(R.id.movie_description);
+
+        try {
+            movieHeading.setText(new String(detailMovieData.getTitle().getBytes(), "UTF-8"));
+            movieDescription.setText(new String(detailMovieData.getOverview().getBytes(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         ImageView moviePoster = (ImageView) detailFragment.findViewById(R.id.movie_detail_image);
         Picasso.with(getActivity())
@@ -48,14 +57,15 @@ public class MovieDetailActivityFragment extends Fragment {
         TextView movieReleaseDate = (TextView) detailFragment.findViewById(R.id.movie_release_date);
         movieReleaseDate.setText(detailMovieData.getReleaseDate());
 
+        //This is just a placeholder with hard coded data.
+        //This field will be used in next stage of the app.
         TextView movieDuration = (TextView) detailFragment.findViewById(R.id.movie_duration);
         movieDuration.setText(getString(R.string.dummy_movie_duration));
 
         TextView movieRating = (TextView) detailFragment.findViewById(R.id.movie_rating);
         movieRating.setText(Double.toString(detailMovieData.getVoteAverage()) + "/10");
 
-        TextView movieDescription = (TextView) detailFragment.findViewById(R.id.movie_description);
-        movieDescription.setText(detailMovieData.getOverview());
+
 
         return detailFragment;
     }

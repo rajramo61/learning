@@ -15,7 +15,7 @@
     <string name="movie_dummy_rating">8.1/10</string>
     <string name="default_movie_sorting_scheme" translatable="false">popularity.desc</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pref_sorting">Sorting</string>
     <string name="pref_select_sorting">Sort By</string>
@@ -23,8 +23,34 @@
     <string name="action_settings">Settings</string>
     <string name="movie_sorting_menu">Sort By</string>
     <string name="pref_key_sorting_scheme" translatable="false">sorting_key</string>
-    <string name="most_popular">Popularity</string>
-    <string name="highest_rated">Rating</string>
+    <string name="most_popular">Most Popularity</string>
+    <string name="highest_rated">Highest Rated</string>
     <string name="sort_movies_by">Sort Movies By</string>
     <string name="movie_sorting_preference_menu">Set Sorting Preference</string>
+
+    <!-- Constants moved from Java String constants to this xml -->
+    <string name="PARAM_KEY_API_KEY" translatable="false">api_key</string>
+    <string name="SCHEME" translatable="false">https</string>
+    <string name="MOVIE_DOMAIN" translatable="false">api.themoviedb.org</string>
+    <string name="PATH_MOVIE_1" translatable="false">3</string>
+    <string name="PATH_MOVIE_2" translatable="false">discover</string>
+    <string name="PATH_MOVIE_3" translatable="false">movie</string>
+    <string name="PARAM_VALUE_MOVIE_SORT_BY_POPULARITY" translatable="false">popularity.desc</string>
+    <string name="PARAM_VALUE_MOVIE_SORT_BY_HIGHEST_RATING" translatable="false">vote_average.desc</string>
+    <string name="PARAM_KEY_MOVIE_SORT_BY_POPULARITY" translatable="false">sort_by</string>
+
+    <string name="MOVIE_ID" translatable="false">id</string>
+    <string name="MOVIE_IMAGE_PATH" translatable="false">poster_path</string>
+    <string name="MOVIE_TITLE" translatable="false">original_title</string>
+    <string name="MOVIE_OVERVIEW" translatable="false">overview</string>
+    <string name="MOVIE_DURATION" translatable="false">runtime</string>
+    <string name="MOVIE_POPULARITY" translatable="false">popularity</string>
+    <string name="MOVIE_USER_RATING" translatable="false">vote_average</string>
+    <string name="MOVIE_RELEASE_DATE" translatable="false">release_date</string>
+    <string name="MOVIE_POSTER_IMAGE_PATH" translatable="false">poster_path</string>
+
+    <string name="IMAGE_DOMAIN" translatable="false">image.tmdb.org</string>
+    <string name="IMAGE_PATH_1" translatable="false">t</string>
+    <string name="IMAGE_PATH_2" translatable="false">p</string>
+    <string name="DEFAULT_IMAGE_SIZE" translatable="false">w185</string>
 </resources>

@@ -5,7 +5,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.learningandroid.rajesh.moviesapp1.R;
 
@@ -15,14 +14,12 @@ public class MoviePreferencesActivity extends PreferenceActivity implements Pref
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(LOG_SORTING_ACTIVITY, "Inside MoviePreferencesActivity");
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
         bindSortingPreferenceToValue(findPreference(getString(R.string.pref_key_sorting_scheme)));
     }
 
     private void bindSortingPreferenceToValue(Preference preference) {
-        Log.i(LOG_SORTING_ACTIVITY, "Inside bindSortingPreferenceToValue");
         preference.setOnPreferenceChangeListener(this);
         onPreferenceChange(preference,
                 PreferenceManager.getDefaultSharedPreferences(preference.getContext())

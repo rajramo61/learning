@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_gravity="center_vertical"
-    android:drawableTop="@drawable/movie_trailer"
+<LinearLayout
+    android:id="@+id/sport_icon_lay"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:textSize="20sp"
-    android:id="@+id/grid_item_movie_textview" />-->
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<ImageView
     android:id="@+id/grid_item_movie_imageview"
-    android:layout_width="150dp"
-    android:layout_height="220dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:adjustViewBounds="true"
     android:contentDescription="@string/grid_view_movie_image_dec" />
+
+    </LinearLayout>
