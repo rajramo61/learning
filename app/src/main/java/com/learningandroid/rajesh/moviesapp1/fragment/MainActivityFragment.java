@@ -275,7 +275,10 @@ public class MainActivityFragment extends Fragment {
                 movieData.setImagePath(resultJsonObj.getString(getString(R.string.MOVIE_IMAGE_PATH)));
                 movieData.setPopularity(resultJsonObj.getDouble(getString(R.string.MOVIE_POPULARITY)));
                 movieData.setVoteAverage(resultJsonObj.getDouble(getString(R.string.MOVIE_USER_RATING)));
-                movieData.setReleaseDate(resultJsonObj.getString(getString(R.string.MOVIE_RELEASE_DATE)));
+                movieData.setReleaseDate(getTextData(
+                        resultJsonObj.getString(getString(R.string.MOVIE_RELEASE_DATE))
+                        , getString(R.string.dummy_movie_release_date)
+                ));
                 movieData.setPosterPath(resultJsonObj.getString(getString(R.string.MOVIE_POSTER_IMAGE_PATH)));
             } catch (JSONException e) {
                 e.printStackTrace();
