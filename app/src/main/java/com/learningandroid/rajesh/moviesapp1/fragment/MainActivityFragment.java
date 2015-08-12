@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -39,6 +40,7 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
     private final static String PARAM_VALUE_API_KEY = "";
+    private final static String MOVIE_KEY = "com.learningandroid.rajesh.moviesapp1.fragment.movie.state.key";
 
     private final String LOG_MAIN_ACTIVITY = MainActivityFragment.class.getSimpleName();
 
@@ -50,9 +52,36 @@ public class MainActivityFragment extends Fragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        if (savedInstanceState != null){
+            movieDataList = (List<MovieData>)savedInstanceState.get(getString(R.string.MOVIE_KEY));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(MOVIE_KEY, (ArrayList<? extends Serializable>) movieDataList);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && movieDataList != null){
+            movieImageAdapter.clear();
+            for (MovieData movieData : movieDataList) movieImageAdapter.add(movieData);
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        fetchMovieData(null);
+        if(movieDataList == null)
+            fetchMovieData(null);
     }
 
     private void fetchMovieData(final String sortingType) {
@@ -73,11 +102,7 @@ public class MainActivityFragment extends Fragment {
                 getString(R.string.default_movie_sorting_scheme));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,8 +124,6 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (Log.isLoggable(LOG_MAIN_ACTIVITY, Log.DEBUG)) Log.d(LOG_MAIN_ACTIVITY, "Inside onOptionsItemSelected");
-
         int selectedMenuId = menuItem.getItemId();
         if (selectedMenuId == R.id.movie_sorting_preference_menu) {
             Intent sortingIntent = new Intent(getActivity(), MoviePreferencesActivity.class);
@@ -240,8 +263,15 @@ public class MainActivityFragment extends Fragment {
 
             try {
                 movieData.setMovieId(resultJsonObj.getLong(getString(R.string.MOVIE_ID)));
-                movieData.setTitle(resultJsonObj.getString(getString(R.string.MOVIE_TITLE)));
-                movieData.setOverview(getOverviewText(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW))));
+                movieData.setTitle(getTextData(
+                        resultJsonObj.getString(getString(R.string.MOVIE_TITLE))
+                        , getString(R.string.dummy_movie_title)
+                ));
+                movieData.setOverview(getTextData(
+                        resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW))
+                        , getString(R.string.dummy_movie_description)
+
+                ));
                 movieData.setImagePath(resultJsonObj.getString(getString(R.string.MOVIE_IMAGE_PATH)));
                 movieData.setPopularity(resultJsonObj.getDouble(getString(R.string.MOVIE_POPULARITY)));
                 movieData.setVoteAverage(resultJsonObj.getDouble(getString(R.string.MOVIE_USER_RATING)));
@@ -253,9 +283,9 @@ public class MainActivityFragment extends Fragment {
             return movieData;
         }
 
-        private String getOverviewText(final String resultJsonObj) throws JSONException {
+        private String getTextData(final String resultJsonObj, final String defaultText) throws JSONException {
             return (resultJsonObj == null || resultJsonObj.isEmpty() || resultJsonObj.equals("null"))
-                    ? getString(R.string.dummy_movie_description) : resultJsonObj;
+                    ? defaultText : resultJsonObj;
         }
     }
 }
