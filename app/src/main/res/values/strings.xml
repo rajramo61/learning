@@ -8,7 +8,7 @@
     <string name="title_activity_movie_detail">MovieDetails</string>
     <string name="movie_poster">Movie Poster</string>
     <string name="movie_button_label">MARK AS FAVORITE</string>
-    <string name="dummy_movie_description">pppppppppppppppp pppppppp ppppppppp ppppppp ppppppp pppppppppppppppp pppppppp ppppppppp ppppppp ppppppp pppppppppppppppp pppppppp ppppppppp ppppppp ppppppp</string>
+    <string name="dummy_movie_description">No overview available.</string>
     <string name="dummy_movie_release_date">2015-07-10</string>
     <string name="dummy_movie_duration">120 min</string>
     <string name="movie_serializable_constant">movie_data_for_detail_activity</string>

@@ -17,12 +17,6 @@ import com.squareup.picasso.Picasso;
 
 public class MovieImageAdapter extends ArrayAdapter<MovieData> {
 
-    private final static String SCHEME = "https";
-    private final static String IMAGE_DOMAIN = "image.tmdb.org";
-    private final static String IMAGE_PATH_1 = "t";
-    private final static String IMAGE_PATH_2 = "p";
-    private final static String DEFAULT_IMAGE_SIZE = "w185";
-
     private final String LOG_MOVIE_ADAPTER = MovieImageAdapter.class.getSimpleName();
 
     private static Resources resources;

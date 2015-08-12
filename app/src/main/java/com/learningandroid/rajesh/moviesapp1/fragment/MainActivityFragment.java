@@ -38,13 +38,13 @@ import java.util.List;
 
 public class MainActivityFragment extends Fragment {
 
-    private final static String PARAM_VALUE_API_KEY = "api_key";
+    private final static String PARAM_VALUE_API_KEY = "";
 
     private final String LOG_MAIN_ACTIVITY = MainActivityFragment.class.getSimpleName();
 
     private MovieImageAdapter movieImageAdapter;
     private List<MovieData> movieDataList;
-
+    private String sortingScheme;
 
     public MainActivityFragment() {
     }
@@ -57,7 +57,6 @@ public class MainActivityFragment extends Fragment {
 
     private void fetchMovieData(final String sortingType) {
         if(Log.isLoggable(LOG_MAIN_ACTIVITY, Log.DEBUG)) Log.d(LOG_MAIN_ACTIVITY, "Inside fetchMovieData");
-        String sortingScheme;
         if (sortingType == null)
             sortingScheme = getSortingPreference();
         else
@@ -242,8 +241,7 @@ public class MainActivityFragment extends Fragment {
             try {
                 movieData.setMovieId(resultJsonObj.getLong(getString(R.string.MOVIE_ID)));
                 movieData.setTitle(resultJsonObj.getString(getString(R.string.MOVIE_TITLE)));
-                movieData.setOverview(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW)));
-                movieData.setOverview(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW)));
+                movieData.setOverview(getOverviewText(resultJsonObj.getString(getString(R.string.MOVIE_OVERVIEW))));
                 movieData.setImagePath(resultJsonObj.getString(getString(R.string.MOVIE_IMAGE_PATH)));
                 movieData.setPopularity(resultJsonObj.getDouble(getString(R.string.MOVIE_POPULARITY)));
                 movieData.setVoteAverage(resultJsonObj.getDouble(getString(R.string.MOVIE_USER_RATING)));
@@ -253,6 +251,11 @@ public class MainActivityFragment extends Fragment {
                 e.printStackTrace();
             }
             return movieData;
+        }
+
+        private String getOverviewText(final String resultJsonObj) throws JSONException {
+            return (resultJsonObj == null || resultJsonObj.isEmpty() || resultJsonObj.equals("null"))
+                    ? getString(R.string.dummy_movie_description) : resultJsonObj;
         }
     }
 }
